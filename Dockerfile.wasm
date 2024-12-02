@@ -1,16 +1,17 @@
-# WASM Dockerfile
-FROM golang:1.20-alpine AS builder
+FROM golang:latest AS builder
 
 WORKDIR /globstark-app
 
 COPY go.mod ./
-COPY go.sum ./
+# COPY go.sum ./
 RUN go mod download
 
 COPY ./wasm ./wasm
 
 RUN GOOS=js GOARCH=wasm go build -o /globstark-app/web/main.wasm ./wasm
 
-FROM scratch
+FROM alpine:latest
 
 COPY --from=builder /globstark-app/web/main.wasm /web/main.wasm
+
+CMD ["echo", "WASM build complete"]

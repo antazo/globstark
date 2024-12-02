@@ -1,15 +1,15 @@
 # Backend Dockerfile
-FROM golang:1.20-alpine AS builder
+FROM golang:latest AS builder
 
 WORKDIR /globstark-app
 
 COPY go.mod ./
-COPY go.sum ./
+# COPY go.sum ./
 RUN go mod download
 
 COPY . ./
 
-RUN go build -o /globstark ./server
+RUN go build -o /globstark ./cmd/server
 
 FROM alpine:latest
 
@@ -21,3 +21,4 @@ COPY --from=builder /globstark-app/web ./web
 EXPOSE 7979
 
 CMD ["./globstark"]
+#CMD ["ls", "-la"]
