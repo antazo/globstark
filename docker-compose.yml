@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "7979:7979"
+    volumes:
+      - ./web:/root/web
+    depends_on:
+      - wasm
+
+  wasm:
+    build:
+      context: .
+      dockerfile: Dockerfile.wasm
+    volumes:
+      - ./web:/web
